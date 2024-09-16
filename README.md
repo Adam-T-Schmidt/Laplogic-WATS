@@ -1,2 +1,2 @@
 # Laplogic-WATS
-Capstone priject for Camosun ECET - Wireless Automotive Telemetry System
+Capstone project for Camosun ECET - Wireless Automotive Telemetry System
