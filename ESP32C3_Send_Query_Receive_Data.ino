@@ -5,8 +5,8 @@
 
 #include <driver/twai.h>  //this drive is included in the board package downloaded for ESP32. Required for TWAI (Two-Wire Automotive Interface).
 
-#define RX_PIN (gpio_num_t)4
-#define TX_PIN (gpio_num_t)5
+const gpio_num_t RX_PIN = GPIO_NUM_4;
+const gpio_num_t TX_PIN = GPIO_NUM_5;
 
 void setup() {
 
@@ -37,14 +37,14 @@ void loop() {
   sendRPMQuery();  //send out query for RPM
 
   twai_message_t receivedMessage;
-  esp_err_t result = twai_receive(&receivedMessage, pdMS_TO_TICKS(300));  //wait for a response for 300ms
+  esp_err_t result = twai_receive(&receivedMessage, pdMS_TO_TICKS(500));  //wait for a response for 500ms
 
   if (result == ESP_OK) {
+    Serial.println("Message has been received");
     handleReceivedMessage(receivedMessage);  // Handle the received message
   } else {
     Serial.println("No message received.");
   }
-
   delay(500);  // Wait for .5 seconds before sending the next query
 }
 
@@ -56,7 +56,8 @@ void sendRPMQuery() {
   queryMessage.data[1] = 0x0C;        //PID for ENGINE RPM
   queryMessage.data_length_code = 2;  //set the legnth of the data
 
-  esp_err_t result = twai_transmit(&queryMessage, pdMS_TO_TICKS(100));  // Send the message
+  esp_err_t result = twai_transmit(&queryMessage, pdMS_TO_TICKS(100));  // Send the message, Verified
+
   if (result == ESP_OK) {
     Serial.println("Query for RPM sent successfully.");
   } else {
@@ -66,29 +67,39 @@ void sendRPMQuery() {
 
 void handleReceivedMessage(twai_message_t message) {
   // Check if the message identifier is 0x7E8
-  if (message.identifier == 0x7E8) {
+  if (message.identifier >= 0x7E8 && message.identifier <= 0x7EF) {
     // Check if the response length is valid (between 3 and 6 additional bytes)
-    if (message.data_length_code >= 3 && message.data_length_code <= 6) {
-      // Identify the service mode and PID from the response
-      uint8_t serviceMode = message.data[1]; // Should be 0x41 for "Show Current Data"
-      uint8_t pid = message.data[2]; // This is the PID we're interested in (0x0C for RPM)
+    Serial.print("Identifier is within range: ");
+    Serial.println(message.identifier);
 
-      // Check if we received the RPM data
-      if (serviceMode == 0x41 && pid == 0x0C) {
-        //Calculate RPM from the response data
-        //Concatenate bytes 2 and 3 (RPM values) into a single integer
-        int concatenatedValue = (message.data[3] << 8) | message.data[4]; // Combine the two bytes
-        int rpm = concatenatedValue / 4; // Calculate RPM
-        Serial.print("Engine value: ");
-        Serial.println(rpm);
-      } else {
-        Serial.println("Received data is not for RPM.");
+    if (message.data_length_code >= 1 && message.data_length_code <= 8) {
+      Serial.print("Length is within range: ");
+      Serial.println(message.data_length_code);
+      
+ 
+      // Print all bytes in message.data
+      for (uint8_t i = 0; i < message.data_length_code; i++) {
+        Serial.print("message.data[");
+        Serial.print(i);
+        Serial.print("]: ");
+        Serial.println(message.data[i]); // Print in hexadecimal format
       }
+
+      // // Check if we received the RPM data
+      // if (serviceMode == 0x41 && pid == 0x0C) {
+      //   //Calculate RPM from the response data
+      //   //Concatenate bytes 2 and 3 (RPM values) into a single integer
+      //   int concatenatedValue = (message.data[3] << 8) | message.data[4];  // Combine the two bytes
+      //   int rpm = concatenatedValue / 4;                                   // Calculate RPM
+      //   Serial.print("Engine value: ");
+      //   Serial.println(rpm);
+      // } else {
+      //   Serial.println("Received data is not for RPM.");
+      // }
     } else {
       Serial.println("Received response has invalid data length.");
     }
   } else {
-    Serial.println("Received message is not from the expected CAN ID (0x7E8).");
+    Serial.println("Received message is not from the expected CAN ID.");
   }
 }
-
