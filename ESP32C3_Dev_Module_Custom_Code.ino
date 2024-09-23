@@ -10,7 +10,8 @@
 
 bool rpmPrinted = false;
 
-void setup() {
+  void
+  setup() {
 
   //Initialize Serial
   Serial.begin(9600);  //May need to change baud rate
@@ -39,30 +40,29 @@ void setup() {
   }
 
   Serial.println("TWAI initialized successfully.");
- 
 }
 
 void loop() {
-
   twai_message_t message;                                         //variable to store received OBD2 message
   esp_err_t result = twai_receive(&message, pdMS_TO_TICKS(100));  //wait for a message up to 100ms
 
   if (result == ESP_OK) {
-    // Print received message details
-    Serial.print("Received message ID: ");
-    Serial.println(message.identifier, HEX);
+
 
     // Check if the received message is for Engine RPM (PID 0x0C)
     if (message.identifier == 0x0C) {
       // Assuming the data format is as per the OBD2 specification
       // For Engine RPM, the data is typically 2 bytes:
       // RPM = ((data[0] * 256) + data[1]) / 4
-      int rpm = ((message.data[0] * 256) + message.data[1]) / 4;
+      int rpm = message.data[0];
 
       // Only print the RPM if we haven't printed it recently
       if (!rpmPrinted) {
+        Serial.print("Received message ID: ");
+        Serial.println(message.identifier, HEX);
         Serial.print("Engine RPM: ");
         Serial.println(rpm);
+
         rpmPrinted = true;  // Mark that we've printed the RPM
       }
     } else {
