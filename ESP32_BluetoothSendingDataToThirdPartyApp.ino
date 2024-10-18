@@ -19,9 +19,6 @@
 // Declare a global variable for the BLE characteristic.
 BLECharacteristic *pCharacteristic;
 
-// Initialize the engine RPM variable, starting at 5. This value will be incremented over time.
-int engineRPM = 5;
-
 // Callback class to handle characteristic events (e.g., when data is written)
 class MyCallbacks : public BLECharacteristicCallbacks {
 void onWrite(BLECharacteristic *pCharacteristic) {
@@ -85,21 +82,24 @@ void setup() {
 }
 
 void loop() {
-  // Increment the engine RPM by 100 each time the loop runs (every 2 seconds).
-  engineRPM += 100;
 
-  // Send updated RPM value over Bluetooth.
-  sendBluetoothData();
+    // Example: Sending 31 bits (all 0's for this example)
+    uint8_t bits[4] = {0};  // Create an array to hold the bytes (4 bytes = 32 bits)
+    
+    // Set the first 3 bytes to 0x00 (8 bits each)
+    // The last byte will contain only 7 bits, so we set it to 0x00 as well
+    bits[0] = 0b10101010; // 8 bits
+    bits[1] = 0b10101010; // 8 bits
+    bits[2] = 0b10101010; // 8 bits
+    bits[3] = 0b1010101;  // 7 bits (to represent the 31st bit, the 8th bit is unused)
 
-  // Wait for 2 seconds before repeating the loop.
-  delay(2000);
+    // Send the bits
+    pCharacteristic->setValue(bits, sizeof(bits));  // Send the byte array
+    pCharacteristic->notify();  // Notify connected devices with the updated value
+    Serial.println("Sent 31 bits: 0000000000000000000000000000000");  // Debug output
+    delay(3000);  // Wait before sending again
 }
 
-// Function to send Bluetooth data
-void sendBluetoothData() {
-  String rpmStr = "Engine RPM: " + String(engineRPM);  // Create a string representation of the current engine RPM value.
-  pCharacteristic->setValue(rpmStr.c_str());  // Convert to C-string and set as characteristic value
-  pCharacteristic->notify();                  // Notify connected devices with the updated value
-  Serial.println(rpmStr);                     // Print for debugging
-}
+
+
 
