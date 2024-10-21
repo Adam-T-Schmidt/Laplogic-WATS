@@ -39,7 +39,7 @@ String blePIDMessage = "";
 
 int PIDsHEX = 0;
 int CountPIDs = 0;
-String binaryString = "";  
+uint32_t binaryString;  
 
 // Переменная для хранения данных, полученных через BLE
 String receivedData = "";
@@ -63,19 +63,6 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 void setup() {
   // Start Serial:
   Serial.begin(500000);
@@ -90,11 +77,6 @@ void setup() {
   pCharacteristic = pService->createCharacteristic(CHARACTERISTIC_UUID,BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY);
 
 
-
-
-
-
-
   // Создаём характеристику
   //BLECharacteristic *pCharacteristic = pService->createCharacteristic(
   //                                       CHARACTERISTIC_UUID,
@@ -104,16 +86,6 @@ void setup() {
 
   // Устанавливаем колбэк для обработки записи данных в характеристику
   pCharacteristic->setCallbacks(new MyCallbacks());
-
-
-
-
-
-
-
-
-
-
 
   // Set the initial value of the characteristic to "".
   // This value will be sent over Bluetooth in UTF-8 format.
@@ -361,6 +333,90 @@ void sendQuery(const String &dataType) {
         queryMessage.data[2] = 0x1F;
     } else if (dataType.equalsIgnoreCase("Distance traveled")) {
         queryMessage.data[2] = 0x21;
+    } else if (dataType.equalsIgnoreCase("Fuel rail pres")) {
+        queryMessage.data[2] = 0x22;
+    } else if (dataType.equalsIgnoreCase("Fuel rail gauge pres")) {
+        queryMessage.data[2] = 0x23;
+    } else if (dataType.equalsIgnoreCase("OS1A")) {
+        queryMessage.data[2] = 0x24;
+    } else if (dataType.equalsIgnoreCase("OS2A")) {
+        queryMessage.data[2] = 0x25;
+    } else if (dataType.equalsIgnoreCase("OS3A")) {
+        queryMessage.data[2] = 0x26;
+    } else if (dataType.equalsIgnoreCase("OS4A")) {
+        queryMessage.data[2] = 0x27;
+    } else if (dataType.equalsIgnoreCase("OS5A")) {
+        queryMessage.data[2] = 0x28;
+    } else if (dataType.equalsIgnoreCase("OS6A")) {
+        queryMessage.data[2] = 0x29;
+    } else if (dataType.equalsIgnoreCase("OS7A")) {
+        queryMessage.data[2] = 0x2A;
+    } else if (dataType.equalsIgnoreCase("OS8A")) {
+        queryMessage.data[2] = 0x2B;
+    } else if (dataType.equalsIgnoreCase("Commanded EGR")) {
+        queryMessage.data[2] = 0x2C;
+    } else if (dataType.equalsIgnoreCase("EGR Error")) {
+        queryMessage.data[2] = 0x2D;
+    } else if (dataType.equalsIgnoreCase("CEP")) {
+        queryMessage.data[2] = 0x2E;
+    } else if (dataType.equalsIgnoreCase("FTLI")) {
+        queryMessage.data[2] = 0x2F;
+    } else if (dataType.equalsIgnoreCase("WSDTCsC")) {
+        queryMessage.data[2] = 0x30;
+    } else if (dataType.equalsIgnoreCase("DTSDTCsC")) {
+        queryMessage.data[2] = 0x31;
+    } else if (dataType.equalsIgnoreCase("ESVP")) {
+        queryMessage.data[2] = 0x32;
+    } else if (dataType.equalsIgnoreCase("ABP")) {
+        queryMessage.data[2] = 0x33;
+    } else if (dataType.equalsIgnoreCase("OS1A2")) {
+        queryMessage.data[2] = 0x34;
+    } else if (dataType.equalsIgnoreCase("OS2A2")) {
+        queryMessage.data[2] = 0x35;
+    } else if (dataType.equalsIgnoreCase("OS3A2")) {
+        queryMessage.data[2] = 0x36;
+    } else if (dataType.equalsIgnoreCase("OS4A2")) {
+        queryMessage.data[2] = 0x37;
+    } else if (dataType.equalsIgnoreCase("OS5A2")) {
+        queryMessage.data[2] = 0x38;
+    } else if (dataType.equalsIgnoreCase("OS6A2")) {
+        queryMessage.data[2] = 0x39;
+    } else if (dataType.equalsIgnoreCase("OS7A2")) {
+        queryMessage.data[2] = 0x3A;
+    } else if (dataType.equalsIgnoreCase("OS8A2")) {
+        queryMessage.data[2] = 0x3B;
+    } else if (dataType.equalsIgnoreCase("CTb1s1")) {
+        queryMessage.data[2] = 0x3C;
+    } else if (dataType.equalsIgnoreCase("CTb2s1")) {
+        queryMessage.data[2] = 0x3D;
+    } else if (dataType.equalsIgnoreCase("CTb1s2")) {
+        queryMessage.data[2] = 0x3E;
+    } else if (dataType.equalsIgnoreCase("CTb2s2")) {
+        queryMessage.data[2] = 0x3F;
+    } else if (dataType.equalsIgnoreCase("MSTDC")) {
+        queryMessage.data[2] = 0x41;
+    } else if (dataType.equalsIgnoreCase("CMV")) {
+        queryMessage.data[2] = 0x42;
+    } else if (dataType.equalsIgnoreCase("ALV")) {
+        queryMessage.data[2] = 0x43;        
+    } else if (dataType.equalsIgnoreCase("CAFER")) {
+        queryMessage.data[2] = 0x44;  
+    } else if (dataType.equalsIgnoreCase("RTP")) {
+        queryMessage.data[2] = 0x45;  
+    } else if (dataType.equalsIgnoreCase("AAT")) {
+        queryMessage.data[2] = 0x46; 
+    } else if (dataType.equalsIgnoreCase("ATPB")) {
+        queryMessage.data[2] = 0x47;
+    } else if (dataType.equalsIgnoreCase("ATPC")) {
+        queryMessage.data[2] = 0x48; 
+    } else if (dataType.equalsIgnoreCase("ATPD")) {
+        queryMessage.data[2] = 0x49; 
+    } else if (dataType.equalsIgnoreCase("ATPE")) {
+        queryMessage.data[2] = 0x4A; 
+    } else if (dataType.equalsIgnoreCase("ATPBF")) {
+        queryMessage.data[2] = 0x4B; 
+    } else if (dataType.equalsIgnoreCase("CTA")) {
+        queryMessage.data[2] = 0x4C; 
     } else {
         Serial.println("Unknown data type requested.");
     }
@@ -413,13 +469,14 @@ if (message.identifier == 0x7E8 && message.data[0] == 0x06 && message.data[1] ==
     }
     Serial.println();
 
-    binaryString = "";
-    for (int i = 31; i >= 0; i--) {
+    binaryString = PIDs0120;
+    //for (int i = 31; i >= 0; i--) {
     // Append each bit to the binaryString
-    binaryString += String((PIDs0120 >> i) & 1);
-    }
-    binaryString = "Binary representation: " + String(binaryString);
-    pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
+    //binaryString += String((PIDs0120 >> i) & 1);
+    //}
+    //binaryString = String(binaryString);
+    //pCharacteristic->setValue(binaryString, sizeof(binaryString));  // Convert String to C-style string
+    pCharacteristic->setValue((uint8_t*)&binaryString, sizeof(binaryString));
     pCharacteristic->notify();
     // //////////////////////////////////////////////////
     // /////////////// ONLY FOR DEBUGGING ///////////////
@@ -526,15 +583,15 @@ if (message.identifier == 0x7E8 && message.data[0] == 0x06 && message.data[1] ==
     Serial.println((PIDs0120 & (1 << 0)) ? "yes" : "no");
 
 
-    PIDsHEX = 1;
-    CountPIDs = 31;
-    while (CountPIDs >= 0) {
-    blePIDMessage = String(PIDsHEX, HEX) + ": " + String((PIDs0120 & (1 << CountPIDs)) ? "yes" : "no");
-    pCharacteristic->setValue(blePIDMessage.c_str());  // Convert String to C-style string
-    pCharacteristic->notify();
-    PIDsHEX++;
-    CountPIDs--;
-    }
+//    PIDsHEX = 1;
+//    CountPIDs = 31;
+//    while (CountPIDs >= 0) {
+//    blePIDMessage = String(PIDsHEX, HEX) + ": " + String((PIDs0120 & (1 << CountPIDs)) ? "yes" : "no");
+//    pCharacteristic->setValue(blePIDMessage.c_str());  // Convert String to C-style string
+//    pCharacteristic->notify();
+//    PIDsHEX++;
+//    CountPIDs--;
+//    }
 
     // Print the received message data
     for (int i = 0; i < message.data_length_code; i++) {
@@ -585,14 +642,17 @@ if (message.identifier == 0x7E8 && message.data[0] == 0x06 && message.data[1] ==
     }
     Serial.println();
 
-    binaryString = "";
-    for (int i = 31; i >= 0; i--) {
+    //binaryString = PIDs2140;
+    //pCharacteristic->setValue((uint8_t*)&binaryString, sizeof(binaryString));
+    //pCharacteristic->notify();
+
+    //for (int i = 31; i >= 0; i--) {
     // Append each bit to the binaryString
-    binaryString += String((PIDs2140 >> i) & 1);
-    }
-    binaryString = "Binary representation: " + String(binaryString);
-    pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
-    pCharacteristic->notify();
+    //binaryString += String((PIDs2140 >> i) & 1);
+    //}
+    //binaryString = "Binary representation: " + String(binaryString);
+    //pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
+    //pCharacteristic->notify();
 
     // //////////////////////////////////////////////////
     // /////////////// ONLY FOR DEBUGGING ///////////////
@@ -761,14 +821,18 @@ if (message.identifier == 0x7E8 && message.data[0] == 0x06 && message.data[1] ==
     }
     Serial.println();
 
-    binaryString = "";
-    for (int i = 31; i >= 0; i--) {
+    //binaryString = PIDs4160;
+    //pCharacteristic->setValue((uint8_t*)&binaryString, sizeof(binaryString));
+    //pCharacteristic->notify();
+
+    //binaryString = "";
+    //for (int i = 31; i >= 0; i--) {
     // Append each bit to the binaryString
-    binaryString += String((PIDs4160 >> i) & 1);
-    }
-    binaryString = "Binary representation: " + String(binaryString);
-    pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
-    pCharacteristic->notify();
+    //binaryString += String((PIDs4160 >> i) & 1);
+    //}
+    //binaryString = "Binary representation: " + String(binaryString);
+    //pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
+    //pCharacteristic->notify();
     // //////////////////////////////////////////////////
     // /////////////// ONLY FOR DEBUGGING ///////////////
     // //////////////////////////////////////////////////
@@ -938,14 +1002,20 @@ if (message.identifier == 0x7E8 && message.data[0] == 0x06 && message.data[1] ==
     }
     Serial.println();
 
-    binaryString = "";
-    for (int i = 31; i >= 0; i--) {
+
+    //binaryString = PIDs6180;
+    //pCharacteristic->setValue((uint8_t*)&binaryString, sizeof(binaryString));
+    //pCharacteristic->notify();
+
+
+    //binaryString = "";
+    //for (int i = 31; i >= 0; i--) {
     // Append each bit to the binaryString
-    binaryString += String((PIDs6180 >> i) & 1);
-    }
-    binaryString = "Binary representation: " + String(binaryString);
-    pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
-    pCharacteristic->notify();
+    //binaryString += String((PIDs6180 >> i) & 1);
+    //}
+    //binaryString = "Binary representation: " + String(binaryString);
+    //pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
+    //pCharacteristic->notify();
 
     // //////////////////////////////////////////////////
     // /////////////// ONLY FOR DEBUGGING ///////////////
@@ -1115,14 +1185,20 @@ if (message.identifier == 0x7E8 && message.data[0] == 0x06 && message.data[1] ==
     }
     Serial.println();
 
-    binaryString = "";
-    for (int i = 31; i >= 0; i--) {
+
+    //binaryString = PIDs81A0;
+    //pCharacteristic->setValue((uint8_t*)&binaryString, sizeof(binaryString));
+    //pCharacteristic->notify();
+
+
+    //binaryString = "";
+    //for (int i = 31; i >= 0; i--) {
     // Append each bit to the binaryString
-    binaryString += String((PIDs81A0 >> i) & 1);
-    }
-    binaryString = "Binary representation: " + String(binaryString);
-    pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
-    pCharacteristic->notify();
+    //binaryString += String((PIDs81A0 >> i) & 1);
+    //}
+    //binaryString = "Binary representation: " + String(binaryString);
+    //pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
+    //pCharacteristic->notify();
 
     // //////////////////////////////////////////////////
     // /////////////// ONLY FOR DEBUGGING ///////////////
@@ -1294,14 +1370,20 @@ if (message.identifier == 0x7E8 && message.data[0] == 0x06 && message.data[1] ==
     }
     Serial.println();
 
-    binaryString = "";
-    for (int i = 31; i >= 0; i--) {
+
+    //binaryString = PIDsA1C0;
+    //pCharacteristic->setValue((uint8_t*)&binaryString, sizeof(binaryString));
+    //pCharacteristic->notify();
+
+
+    //binaryString = "";
+    //for (int i = 31; i >= 0; i--) {
     // Append each bit to the binaryString
-    binaryString += String((PIDsA1C0 >> i) & 1);
-    }
-    binaryString = "Binary representation: " + String(binaryString);
-    pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
-    pCharacteristic->notify();
+    //binaryString += String((PIDsA1C0 >> i) & 1);
+    //}
+    //binaryString = "Binary representation: " + String(binaryString);
+    //pCharacteristic->setValue(binaryString.c_str());  // Convert String to C-style string
+    //pCharacteristic->notify();
 
     // //////////////////////////////////////////////////
     // /////////////// ONLY FOR DEBUGGING ///////////////
@@ -1611,14 +1693,307 @@ if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] ==
   SaveDataType = message.data[2];
   SaveDataValue = RunTime;
   }
-if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x21 && message.data_length_code >= 4)
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x21 && message.data_length_code >= 6)
   {
   int DistanceTraveled = ((message.data[3] << 8) | message.data[4]);
   Serial.printf("Distance traveled with MIL on: %d km \n", DistanceTraveled);
   SaveDataType = message.data[2];
   SaveDataValue = DistanceTraveled;
   }
-//SaveDataType = message.data[2];
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x22 && message.data_length_code >= 6)
+  {
+  float FuelRailPres = (((message.data[3] << 8) | message.data[4]) * 0.079);
+  Serial.printf("Fuel rail pres.: %.2f kPa \n", FuelRailPres);
+  SaveDataType = message.data[2];
+  SaveDataValue = FuelRailPres;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x23 && message.data_length_code >= 6)
+  {
+  int FuelRailGaugePres = (((message.data[3] << 8) | message.data[4]) * 10);
+  Serial.printf("Fuel rail gauge pres: %d kPa \n", FuelRailGaugePres);
+  SaveDataType = message.data[2];
+  SaveDataValue = FuelRailGaugePres;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x24 && message.data_length_code >= 6)
+  {
+  float OxygenSensor1AirFuel = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 1 air fuel: %.2f ratio \n", OxygenSensor1AirFuel);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor1AirFuel;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x25 && message.data_length_code >= 6)
+  {
+  float OxygenSensor2AirFuel = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 2 air fuel: %.2f ratio \n", OxygenSensor2AirFuel);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor2AirFuel;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x26 && message.data_length_code >= 6)
+  {
+  float OxygenSensor3AirFuel = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 3 air fuel: %.2f ratio \n", OxygenSensor3AirFuel);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor3AirFuel;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x27 && message.data_length_code >= 6)
+  {
+  float OxygenSensor4AirFuel = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 4 air fuel: %.2f ratio \n", OxygenSensor4AirFuel);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor4AirFuel;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x28 && message.data_length_code >= 6)
+  {
+  float OxygenSensor5AirFuel = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 5 air fuel: %.2f ratio \n", OxygenSensor5AirFuel);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor5AirFuel;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x29 && message.data_length_code >= 6)
+  {
+  float OxygenSensor6AirFuel = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 6 air fuel: %.2f ratio \n", OxygenSensor6AirFuel);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor6AirFuel;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x2A && message.data_length_code >= 6)
+  {
+  float OxygenSensor7AirFuel = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 7 air fuel: %.2f ratio \n", OxygenSensor7AirFuel);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor7AirFuel;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x2B && message.data_length_code >= 6)
+  {
+  float OxygenSensor8AirFuel = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 8 air fuel: %.2f ratio \n", OxygenSensor8AirFuel);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor8AirFuel;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x2C && message.data_length_code >= 4)
+  {
+  float CommandedEGR = ((message.data[3]) * (1/2.55));
+  Serial.printf("Commanded EGR: %.2f %% \n", CommandedEGR);
+  SaveDataType = message.data[2];
+  SaveDataValue = CommandedEGR;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x2D && message.data_length_code >= 4)
+  {
+  float EGRerror = (-100 + ((message.data[3]) * (1/2.55)));
+  Serial.printf("EGR Error: %.2f %% \n", EGRerror);
+  SaveDataType = message.data[2];
+  SaveDataValue = EGRerror;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x2E && message.data_length_code >= 4)
+  {
+  float CommandedEvaporativePurge = ((message.data[3]) * (1/2.55));
+  Serial.printf("Commanded evaporative purge: %.2f %% \n", CommandedEvaporativePurge);
+  SaveDataType = message.data[2];
+  SaveDataValue = CommandedEvaporativePurge;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x2F && message.data_length_code >= 4)
+  {
+  float FuelTankLevelInput = ((message.data[3]) * (1/2.55));
+  Serial.printf("Fuel tank level input: %.2f %% \n", FuelTankLevelInput);
+  SaveDataType = message.data[2];
+  SaveDataValue = FuelTankLevelInput;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x30 && message.data_length_code >= 4)
+  {
+  int WarmupsSinceDTCsCleared = (message.data[3]);
+  Serial.printf("Warmups since DTCs cleared: %d count \n", WarmupsSinceDTCsCleared);
+  SaveDataType = message.data[2];
+  SaveDataValue = WarmupsSinceDTCsCleared;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x31 && message.data_length_code >= 6)
+  {
+  int DistanceTraveledSinceDTCsCleared = ((message.data[3] << 8) | message.data[4]);
+  Serial.printf("Distance traveled since DTCs cleared: %d km \n", DistanceTraveledSinceDTCsCleared);
+  SaveDataType = message.data[2];
+  SaveDataValue = DistanceTraveledSinceDTCsCleared;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x32 && message.data_length_code >= 6)
+  {
+  float ESVP = (((message.data[3] << 8) | message.data[4]) * 0.25);
+  Serial.printf("Evap. system vapor pressure: %.2f Pa \n", ESVP);
+  SaveDataType = message.data[2];
+  SaveDataValue = ESVP;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x33 && message.data_length_code >= 4)
+  {
+  int AbsoluteBarometricPressure = (message.data[3]);
+  Serial.printf("Absolute barometric pressure: %d kPa \n", AbsoluteBarometricPressure);
+  SaveDataType = message.data[2];
+  SaveDataValue = AbsoluteBarometricPressure;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x34 && message.data_length_code >= 6)
+  {
+  float OxygenSensor1AirFuel2 = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 1 air fuel 2: %.2f ratio \n", OxygenSensor1AirFuel2);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor1AirFuel2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x35 && message.data_length_code >= 6)
+  {
+  float OxygenSensor2AirFuel2 = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 2 air fuel 2: %.2f ratio \n", OxygenSensor2AirFuel2);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor2AirFuel2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x36 && message.data_length_code >= 6)
+  {
+  float OxygenSensor3AirFuel2 = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 3 air fuel 2: %.2f ratio \n", OxygenSensor3AirFuel2);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor3AirFuel2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x47 && message.data_length_code >= 6)
+  {
+  float OxygenSensor4AirFuel2 = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 4 air fuel 2: %.2f ratio \n", OxygenSensor4AirFuel2);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor4AirFuel2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x38 && message.data_length_code >= 6)
+  {
+  float OxygenSensor5AirFuel2 = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 5 air fuel 2: %.2f ratio \n", OxygenSensor5AirFuel2);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor5AirFuel2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x39 && message.data_length_code >= 6)
+  {
+  float OxygenSensor6AirFuel2 = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 6 air fuel 2: %.2f ratio \n", OxygenSensor6AirFuel2);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor6AirFuel2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x3A && message.data_length_code >= 6)
+  {
+  float OxygenSensor7AirFuel2 = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 7 air fuel 2: %.2f ratio \n", OxygenSensor7AirFuel2);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor7AirFuel2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x3B && message.data_length_code >= 6)
+  {
+  float OxygenSensor8AirFuel2 = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Oxygen sensor 8 air fuel 2: %.2f ratio \n", OxygenSensor8AirFuel2);
+  SaveDataType = message.data[2];
+  SaveDataValue = OxygenSensor8AirFuel2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x3C && message.data_length_code >= 6)
+  {
+  int CatalystTempBank1Sensor1 = (-40 + (((message.data[3] << 8) | message.data[4]) * 0.1));
+  Serial.printf("Catalyst temperature bank 1, sensor 1: %d degC \n", CatalystTempBank1Sensor1);
+  SaveDataType = message.data[2];
+  SaveDataValue = CatalystTempBank1Sensor1;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x3D && message.data_length_code >= 6)
+  {
+  int CatalystTempBank2Sensor1 = (-40 + (((message.data[3] << 8) | message.data[4]) * 0.1));
+  Serial.printf("Catalyst temperature bank 2, sensor 1: %d degC \n", CatalystTempBank2Sensor1);
+  SaveDataType = message.data[2];
+  SaveDataValue = CatalystTempBank2Sensor1;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x3E && message.data_length_code >= 6)
+  {
+  int CatalystTempBank1Sensor2 = (-40 + (((message.data[3] << 8) | message.data[4]) * 0.1));
+  Serial.printf("Catalyst temperature bank 1, sensor 1: %d degC \n", CatalystTempBank1Sensor2);
+  SaveDataType = message.data[2];
+  SaveDataValue = CatalystTempBank1Sensor2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x3F && message.data_length_code >= 6)
+  {
+  int CatalystTempBank2Sensor2 = (-40 + (((message.data[3] << 8) | message.data[4]) * 0.1));
+  Serial.printf("Catalyst temperature bank 2, sensor 2: %d degC \n", CatalystTempBank2Sensor2);
+  SaveDataType = message.data[2];
+  SaveDataValue = CatalystTempBank2Sensor2;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x06 && message.data[1] == 0x41 && message.data[2] == 0x41 && message.data_length_code >= 6)
+  {
+  unsigned long MonitorStatusThisDriveCycle = (message.data[3] << 24) | (message.data[4] << 16) | (message.data[5] << 8) | (message.data[6]);
+  Serial.printf("Monitor status this drive cycle: %lu encoded \n", MonitorStatusThisDriveCycle);
+  SaveDataType = message.data[2];
+  SaveDataValue = MonitorStatusThisDriveCycle;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x42 && message.data_length_code >= 6)
+  {
+  float ControlModuleVoltage = (((message.data[3] << 8) | message.data[4]) * 0.001);
+  Serial.printf("Control module voltage: %.2f V \n", ControlModuleVoltage);
+  SaveDataType = message.data[2];
+  SaveDataValue = ControlModuleVoltage;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x43 && message.data_length_code >= 6)
+  {
+  float AbsoluteLoadValue = (((message.data[3] << 8) | message.data[4]) * (1/2.55));
+  Serial.printf("Absolute load value: %.2f %% \n", AbsoluteLoadValue);
+  SaveDataType = message.data[2];
+  SaveDataValue = AbsoluteLoadValue;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x04 && message.data[1] == 0x41 && message.data[2] == 0x44 && message.data_length_code >= 6)
+  {
+  float CommanderAirFuelEquivRatio = (((message.data[3] << 8) | message.data[4]) * (1/32768));
+  Serial.printf("Commander air/fuel equiv. ratio: %.2f ratio \n", CommanderAirFuelEquivRatio);
+  SaveDataType = message.data[2];
+  SaveDataValue = CommanderAirFuelEquivRatio;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x45 && message.data_length_code >= 4)
+  {
+  float RelativeThrottlePosition = ((message.data[3]) * (1/2.55));
+  Serial.printf("Relative throttle position: %.2f %% \n", RelativeThrottlePosition);
+  SaveDataType = message.data[2];
+  SaveDataValue = RelativeThrottlePosition;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x46 && message.data_length_code >= 4)
+  {
+  int AmbientAirTemperature = (-40 + (message.data[3]));
+  Serial.printf("Ambient air temperature: %d degC \n", AmbientAirTemperature);
+  SaveDataType = message.data[2];
+  SaveDataValue = AmbientAirTemperature;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x47 && message.data_length_code >= 4)
+  {
+  float AbsoluteThrottlePositionB = ((message.data[3]) * (1/2.55));
+  Serial.printf("Absolute throttle position B: %.2f %% \n", AbsoluteThrottlePositionB);
+  SaveDataType = message.data[2];
+  SaveDataValue = AbsoluteThrottlePositionB;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x48 && message.data_length_code >= 4)
+  {
+  float AbsoluteThrottlePositionC = ((message.data[3]) * (1/2.55));
+  Serial.printf("Absolute throttle position C: %.2f %% \n", AbsoluteThrottlePositionC);
+  SaveDataType = message.data[2];
+  SaveDataValue = AbsoluteThrottlePositionC;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x49 && message.data_length_code >= 4)
+  {
+  float AbsoluteThrottlePositionD = ((message.data[3]) * (1/2.55));
+  Serial.printf("Absolute throttle position D: %.2f %% \n", AbsoluteThrottlePositionD);
+  SaveDataType = message.data[2];
+  SaveDataValue = AbsoluteThrottlePositionD;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x4A && message.data_length_code >= 4)
+  {
+  float AbsoluteThrottlePositionE = ((message.data[3]) * (1/2.55));
+  Serial.printf("Absolute throttle position E: %.2f %% \n", AbsoluteThrottlePositionE);
+  SaveDataType = message.data[2];
+  SaveDataValue = AbsoluteThrottlePositionE;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x4B && message.data_length_code >= 4)
+  {
+  float AbsoluteThrottlePositionF = ((message.data[3]) * (1/2.55));
+  Serial.printf("Absolute throttle position F: %.2f %% \n", AbsoluteThrottlePositionF);
+  SaveDataType = message.data[2];
+  SaveDataValue = AbsoluteThrottlePositionF;
+  }
+if (message.identifier == 0x7E8 && message.data[0] == 0x03 && message.data[1] == 0x41 && message.data[2] == 0x4C && message.data_length_code >= 4)
+  {
+  float CommandedThrottleActuator = ((message.data[3]) * (1/2.55));
+  Serial.printf("Commanded throttle actuator: %.2f %% \n", CommandedThrottleActuator);
+  SaveDataType = message.data[2];
+  SaveDataValue = CommandedThrottleActuator;
+  }
 }
 
 void loop() {
@@ -1663,202 +2038,490 @@ if (dataBuffer.length() > 0 && (millis() - lastDataTime > DATA_TIMEOUT)) {
       isRunning = true; // Set the flag that the system is running
     }
 
-  } else if (input.equalsIgnoreCase("Freeze DTC") || receivedData == "Freeze DTC") { // 
+  } else if (input.equalsIgnoreCase("Freeze DTC") || receivedData == "02") { // 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Freeze DTC";
       sendQuery(currentDataType); // Send the query
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("Fuel system status") || receivedData == "FSS") { // 
+  } else if (input.equalsIgnoreCase("Fuel system status") || receivedData == "03") { // 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Fuel system status";
       sendQuery(currentDataType); // Send the query
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("Calculated engine load") || receivedData == "CEL") { // 
+  } else if (input.equalsIgnoreCase("Calculated engine load") || receivedData == "04") { // 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Calculated engine load";
       sendQuery(currentDataType); // Send the query
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("Coolant") || receivedData == "coolant") { // If 'Coolant' is entered
+  } else if (input.equalsIgnoreCase("Coolant") || receivedData == "05") { // If 'Coolant' is entered
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Coolant";
       sendQuery(currentDataType); // Send the query for coolant data
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("STFT1") || receivedData == "STFT1") { 
+  } else if (input.equalsIgnoreCase("STFT1") || receivedData == "06") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "STFT1";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("LTFT1") || receivedData == "LFTF1") { 
+  } else if (input.equalsIgnoreCase("LTFT1") || receivedData == "07") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "LTFT1";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("STFT2") || receivedData == "STFT2") { 
+  } else if (input.equalsIgnoreCase("STFT2") || receivedData == "08") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "STFT2";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("LTFT2") || receivedData == "LTFT2") { 
+  } else if (input.equalsIgnoreCase("LTFT2") || receivedData == "09") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "LTFT2";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("Fuel Pressure") || receivedData == "FP") { 
+  } else if (input.equalsIgnoreCase("Fuel Pressure") || receivedData == "0A") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Fuel Pressure";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("IMAP") || receivedData == "IMAP") { 
+  } else if (input.equalsIgnoreCase("IMAP") || receivedData == "0B") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "IMAP";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("RPM") || receivedData == "RPM") { // If 'RPM' is entered
+  } else if (input.equalsIgnoreCase("RPM") || receivedData == "0C") { // If 'RPM' is entered
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "RPM";
       sendQuery(currentDataType); // Send the query for RPM data
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("Speed") || receivedData == "speed") { 
+  } else if (input.equalsIgnoreCase("Speed") || receivedData == "0D") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Speed";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("Timing advance") || receivedData == "TA") { 
+  } else if (input.equalsIgnoreCase("Timing advance") || receivedData == "0E") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Timing advance";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("IAT") || receivedData == "IAT") { 
+  } else if (input.equalsIgnoreCase("IAT") || receivedData == "0F") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "IAT";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("MAFSAFR") || receivedData == "MAFSAFR") { 
+  } else if (input.equalsIgnoreCase("MAFSAFR") || receivedData == "10") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "MAFSAFR";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("Throttle position") || receivedData == "TP") { 
+  } else if (input.equalsIgnoreCase("Throttle position") || receivedData == "11") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Throttle position";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("CSAS") || receivedData == "CSAS") { 
+  } else if (input.equalsIgnoreCase("CSAS") || receivedData == "12") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "CSAS";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("OS1V") || receivedData == "OS1V") { 
+  } else if (input.equalsIgnoreCase("OS1V") || receivedData == "14") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "OS1V";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("OS2V") || receivedData == "OS2V") { 
+  } else if (input.equalsIgnoreCase("OS2V") || receivedData == "15") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "OS2V";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("OS3V") || receivedData == "OS3V") { 
+  } else if (input.equalsIgnoreCase("OS3V") || receivedData == "16") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "OS3V";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("OS4V") || receivedData == "OS4V") { 
+  } else if (input.equalsIgnoreCase("OS4V") || receivedData == "17") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "OS4V";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("OS5V") || receivedData == "OS5V") { 
+  } else if (input.equalsIgnoreCase("OS5V") || receivedData == "18") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "OS5V";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("OS6V") || receivedData == "OS5V") { 
+  } else if (input.equalsIgnoreCase("OS6V") || receivedData == "19") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "OS6V";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("OS7V") || receivedData == "OS7V") { 
+  } else if (input.equalsIgnoreCase("OS7V") || receivedData == "1A") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "OS7V";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("OS8V")) { 
+  } else if (input.equalsIgnoreCase("OS8V") || receivedData == "1B") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "OS8V";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("OBD standards")) { 
+  } else if (input.equalsIgnoreCase("OBD standards") || receivedData == "1C") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "OBD standards";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("Run time")) { 
+  } else if (input.equalsIgnoreCase("Run time") || receivedData == "1F") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Run time";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
-  } else if (input.equalsIgnoreCase("Distance traveled")) { 
+  } else if (input.equalsIgnoreCase("Distance traveled") || receivedData == "21") { 
     if (!pidExecuted) { // Check if the command has already been executed
       currentDataType = "Distance traveled";
       sendQuery(currentDataType); // Send the query 
       lastRequestTime = millis(); // Save the execution time
       isRunning = true; // Set the flag that the system is running
     }
+  } else if (input.equalsIgnoreCase("Fuel rail pres") || receivedData == "22") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "Fuel rail pres";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("Fuel rail gauge pres") || receivedData == "23") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "Fuel rail gauge pres";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS1A") || receivedData == "24") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS1A";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS2A") || receivedData == "25") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS2A";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS3A") || receivedData == "26") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS3A";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS4A") || receivedData == "27") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS4A";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS5A") || receivedData == "28") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS5A";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS6A") || receivedData == "29") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS6A";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS7A") || receivedData == "2A") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS7A";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS8A") || receivedData == "2B") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS8A";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("Commanded EGR") || receivedData == "2C") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "Commanded EGR";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("EGR Error") || receivedData == "2D") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "EGR Error";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("CEP") || receivedData == "2E") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "CEP";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("FTLI") || receivedData == "2F") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "FTLI";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("WSDTCsC") || receivedData == "30") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "WSDTCsC";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("DTSDTCsC") || receivedData == "31") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "DTSDTCsC";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }    
+  } else if (input.equalsIgnoreCase("ESVP") || receivedData == "32") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "ESVP";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }   
+  } else if (input.equalsIgnoreCase("ABP") || receivedData == "33") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "ABP";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }  
+  } else if (input.equalsIgnoreCase("OS1A2") || receivedData == "34") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS1A2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS2A2") || receivedData == "35") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS2A2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS3A2") || receivedData == "36") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS3A2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS4A2") || receivedData == "37") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS4A2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS5A2") || receivedData == "38") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS5A2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS6A2") || receivedData == "39") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS6A2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS7A2") || receivedData == "3A") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS7A2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("OS8A2") || receivedData == "3B") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "OS8A2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("CTb1s1") || receivedData == "3C") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "CTb1s1";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("CTb2s1") || receivedData == "3D") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "CTb2s1";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("CTb1s2") || receivedData == "3E") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "CTb1s2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("CTb2s2") || receivedData == "3F") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "CTb2s2";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("MSTDC") || receivedData == "41") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "MSTDC";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("CMV") || receivedData == "42") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "CMV";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("ALV") || receivedData == "43") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "ALV";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("CAFER") || receivedData == "44") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "CAFER";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("RTP") || receivedData == "45") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "RTP";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("AAT") || receivedData == "46") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "AAT";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("ATPB") || receivedData == "47") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "ATPB";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("ATPC") || receivedData == "48") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "ATPC";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("ATPD") || receivedData == "49") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "ATPD";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("ATPE") || receivedData == "4A") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "ATPE";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+  } else if (input.equalsIgnoreCase("ATPF") || receivedData == "4B") { 
+    if (!pidExecuted) { // Check if the command has already been executed
+      currentDataType = "ATPF";
+      sendQuery(currentDataType); // Send the query 
+      lastRequestTime = millis(); // Save the execution time
+      isRunning = true; // Set the flag that the system is running
+    }
+
   } else if (input.equalsIgnoreCase("STOP") || receivedData == "stop") { // If 'STOP' is entered
     isRunning = false; // Set the flag that the system has stopped
     pidExecuted = false; // Reset the command execution flag
