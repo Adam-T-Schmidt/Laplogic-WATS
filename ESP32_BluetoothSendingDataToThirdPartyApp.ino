@@ -33,7 +33,7 @@ void onWrite(BLECharacteristic *pCharacteristic) {
 }
 };
 
-
+bool alreadySent = false;
 
 void setup() {
   // Start the Serial communication at 115200 baud rate for debugging.
@@ -79,10 +79,15 @@ void setup() {
 
   // Print a message indicating that the characteristic is ready and the device is advertising.
   Serial.println("WATS is ready to connect!");
+
+
 }
 
 void loop() {
 
+if(!alreadySent){
+
+    delay(10000);
     // Example: Sending 31 bits (all 0's for this example)
     uint8_t bits[4] = {0};  // Create an array to hold the bytes (4 bytes = 32 bits)
     
@@ -97,9 +102,7 @@ void loop() {
     pCharacteristic->setValue(bits, sizeof(bits));  // Send the byte array
     pCharacteristic->notify();  // Notify connected devices with the updated value
     Serial.println("Sent 31 bits: 0000000000000000000000000000000");  // Debug output
-    delay(3000);  // Wait before sending again
 }
-
-
-
+alreadySent = true;
+}
 
