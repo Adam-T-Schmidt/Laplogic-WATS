@@ -18,27 +18,41 @@
 
 // Declare a global variable for the BLE characteristic.
 BLECharacteristic *pCharacteristic;
+bool alreadySent = true; //Illia, you do not need to add this
 
-// Callback class to handle characteristic events (e.g., when data is written)
-class MyCallbacks : public BLECharacteristicCallbacks {
-void onWrite(BLECharacteristic *pCharacteristic) {
+//Need to add these two classes. 
+// Server callback class to handle connection and disconnection events
+class MyServerCallbacks : public BLEServerCallbacks {
+  void onConnect(BLEServer *pServer) {
+    Serial.println("Device connected");
+    alreadySent=false; //Illia, you dont need to add this
+  }
+
+  void onDisconnect(BLEServer *pServer) {
+    Serial.println("Device disconnected");
+    BLEDevice::startAdvertising();  // Restart advertising after disconnection
+    Serial.println("Restarted advertising");
+  }
+};
+
+// Characteristic callback class to handle characteristic events (e.g., when data is written)
+class MyCharacteristicCallbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
     // Get the data written by the phone and convert it to std::string
-    std::string receivedData = pCharacteristic->getValue().c_str(); // Convert to std::string
+    std::string receivedData = pCharacteristic->getValue().c_str();  // Convert to std::string
 
     // Check if the received data is not empty
     if (receivedData.length() > 0) {
-        Serial.print("Received data: ");
-        Serial.println(receivedData.c_str());  // Print the received data
+      Serial.print("Received data: ");
+      Serial.println(receivedData.c_str());  // Print the received data
     }
-}
+  }
 };
-
-bool alreadySent = false;
 
 void setup() {
   // Start the Serial communication at 115200 baud rate for debugging.
   Serial.begin(115200);
-  Serial.println("Starting BLE work!");  // Print a message indicating BLE setup is starting.
+  Serial.println("Starting BLE work!");
 
   // Initialize the BLE device with the name "WATS".
   BLEDevice::init("WATS");
@@ -46,19 +60,26 @@ void setup() {
   // Create a BLE server instance that handles connections and services.
   BLEServer *pServer = BLEDevice::createServer();
 
+//Illia have to add this line
+  // Set custom server callbacks for connection and disconnection events
+  pServer->setCallbacks(new MyServerCallbacks());
+
   // Create a BLE service using the defined SERVICE_UUID.
   BLEService *pService = pServer->createService(SERVICE_UUID);
 
   // Create a BLE characteristic for the service, with both read and write properties.
-  pCharacteristic = pService->createCharacteristic(CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY);
+  pCharacteristic = pService->createCharacteristic(
+    CHARACTERISTIC_UUID,
+    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY);
 
-  // Assign our custom callback class to handle incoming data.
-  pCharacteristic->setCallbacks(new MyCallbacks());  // Use setCallbacks with a new instance of MyCallbacks
+//Illia you will have to modify this line 
+  // Assign our custom characteristic callback class to handle incoming data.
+  pCharacteristic->setCallbacks(new MyCharacteristicCallbacks());
 
   // Set the initial value of the characteristic to "Engine RPM: 0".
   pCharacteristic->setValue("Engine RPM: 0");
-  
-  // Start the BLE service to make it available to clients (e.g., a phone).
+
+  // Start the BLE service to make it available to clients.
   pService->start();
 
   // Get the advertising object for the BLE server.
@@ -70,39 +91,36 @@ void setup() {
   // Enable scan response to improve compatibility with iPhones and other devices.
   pAdvertising->setScanResponse(true);
 
-  // Set preferred connection parameters to improve compatibility with iPhones.
-  pAdvertising->setMinPreferred(0x06);  // Minimum connection interval (in units of 1.25ms)
-  pAdvertising->setMinPreferred(0x12);  // Maximum connection interval (in units of 1.25ms)
+  // Set preferred connection parameters.
+  pAdvertising->setMinPreferred(0x06);
+  pAdvertising->setMinPreferred(0x12);
 
-  // Start advertising the BLE device, making it discoverable by clients.
+  // Start advertising the BLE device.
   BLEDevice::startAdvertising();
 
-  // Print a message indicating that the characteristic is ready and the device is advertising.
   Serial.println("WATS is ready to connect!");
-
-
 }
 
+
+//Illia, there is nothing new to add in the loop
 void loop() {
-
-if(!alreadySent){
-
+  if (!alreadySent) {
     delay(10000);
     // Example: Sending 31 bits (all 0's for this example)
-    uint8_t bits[4] = {0};  // Create an array to hold the bytes (4 bytes = 32 bits)
-    
+    uint8_t bits[4] = { 0 };  // Create an array to hold the bytes (4 bytes = 32 bits)
+
     // Set the first 3 bytes to 0x00 (8 bits each)
     // The last byte will contain only 7 bits, so we set it to 0x00 as well
-    bits[0] = 0b10101010; // 8 bits
-    bits[1] = 0b10101010; // 8 bits
-    bits[2] = 0b10101010; // 8 bits
-    bits[3] = 0b1010101;  // 7 bits (to represent the 31st bit, the 8th bit is unused)
+    bits[0] = 0b10101010;  // 8 bits
+    bits[1] = 0b10101010;  // 8 bits
+    bits[2] = 0b10101010;  // 8 bits
+    bits[3] = 0b1010101;   // 7 bits (to represent the 31st bit, the 8th bit is unused)
 
     // Send the bits
-    pCharacteristic->setValue(bits, sizeof(bits));  // Send the byte array
-    pCharacteristic->notify();  // Notify connected devices with the updated value
+    pCharacteristic->setValue(bits, sizeof(bits));                    // Send the byte array
+    pCharacteristic->notify();                                        // Notify connected devices with the updated value
     Serial.println("Sent 31 bits: 0000000000000000000000000000000");  // Debug output
-}
-alreadySent = true;
+    alreadySent = true;  // Set the flag to true to avoid resending
+  }
 }
 
